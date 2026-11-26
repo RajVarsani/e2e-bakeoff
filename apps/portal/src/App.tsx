@@ -6,7 +6,7 @@ import { useSession } from "./useSession";
 type Item = { id: number; title: string; status: string; content: string | null };
 type Crm = { connected: boolean; clients: { id: string; name: string; email: string }[] };
 
-const CRM_URL = import.meta.env.VITE_CRM_URL ?? "http://crm.localhost:5103";
+const CRM_URL = import.meta.env.VITE_CRM_URL as string;
 const REDIRECT_URI = `${location.origin}/crm/callback`;
 
 export default function App() {

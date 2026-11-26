@@ -1,15 +1,16 @@
 import { Hono } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { Database } from "bun:sqlite";
+import { ports, urls, dbSuffix } from "../../../ports";
 
-const PORT = Number(process.env.CRM_PORT ?? 5103);
+const PORT = ports.crm;
 const TEST_MODE = process.env.TEST_MODE === "1";
-const PORTAL_URL = process.env.PORTAL_URL ?? "http://portal.localhost:5102";
+const PORTAL_URL = urls.portal;
 const CLIENT_ID = process.env.CRM_CLIENT_ID ?? "portal-app";
 const CLIENT_SECRET = process.env.CRM_CLIENT_SECRET ?? "portal-secret";
 const ALLOWED_REDIRECTS = [`${PORTAL_URL}/crm/callback`];
 
-const db = new Database(process.env.CRM_DB_PATH ?? "crm.db", { create: true });
+const db = new Database(process.env.CRM_DB_PATH ?? `crm${dbSuffix}.db`, { create: true });
 db.exec(`
 CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE, name TEXT, password TEXT);
 CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, user_id INTEGER, name TEXT, email TEXT);

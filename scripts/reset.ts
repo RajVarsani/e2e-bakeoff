@@ -1,5 +1,5 @@
-const api = process.env.API_URL_INTERNAL ?? `http://127.0.0.1:${process.env.API_PORT ?? 5100}`;
-const crm = process.env.CRM_INTERNAL_URL ?? `http://127.0.0.1:${process.env.CRM_PORT ?? 5103}`;
+import { internal } from "../ports";
+const { api, crm } = internal;
 for (const base of [api, crm]) {
   const r = await fetch(`${base}/test/reset`, { method: "POST" });
   console.log(base, r.status, await r.text());

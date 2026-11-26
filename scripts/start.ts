@@ -1,5 +1,8 @@
 // Boots api, crm, admin, portal and prefixes their output. Ctrl-C stops all.
+import { PORT_OFFSET, ports } from "../ports";
 process.env.TEST_MODE ??= "1";
+process.env.PORT_OFFSET = String(PORT_OFFSET);
+console.log(`PORT_OFFSET=${PORT_OFFSET}`, ports);
 const apps = ["api", "crm", "admin", "portal"] as const;
 const colors = { api: 36, crm: 35, admin: 33, portal: 32 };
 const procs = apps.map((name) => {

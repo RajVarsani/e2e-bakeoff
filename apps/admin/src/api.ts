@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL ?? "http://api.localhost:5100";
+const API = import.meta.env.VITE_API_URL as string;
 const KEY = "token";
 
 export const getToken = () => localStorage.getItem(KEY);

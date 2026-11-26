@@ -2,10 +2,11 @@ import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
 import { db, hash, wipeAndSeed } from "./db";
 import "./worker";
+import { ports, urls, internal } from "../../../ports";
 
-const PORT = Number(process.env.API_PORT ?? 5100);
+const PORT = ports.api;
 const TEST_MODE = process.env.TEST_MODE === "1";
-const CRM_INTERNAL = process.env.CRM_INTERNAL_URL ?? "http://127.0.0.1:5103";
+const CRM_INTERNAL = internal.crm;
 const CLIENT_ID = process.env.CRM_CLIENT_ID ?? "portal-app";
 const CLIENT_SECRET = process.env.CRM_CLIENT_SECRET ?? "portal-secret";
 
@@ -18,7 +19,7 @@ type Letter = {
 
 const app = new Hono<{ Variables: { user: User } }>();
 app.use("*", cors({
-  origin: (o) => (/^http:\/\/[a-z0-9-]+\.localhost:\d+$/.test(o) || /^http:\/\/127\.0\.0\.1:\d+$/.test(o) ? o : null),
+  origin: [urls.admin, urls.portal, urls.crm],
   allowHeaders: ["Authorization", "Content-Type"],
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));

@@ -1,6 +1,7 @@
 import { Database } from "bun:sqlite";
+import { dbSuffix } from "../../../ports";
 
-export const db = new Database(process.env.DB_PATH ?? "data.db", { create: true });
+export const db = new Database(process.env.DB_PATH ?? `data${dbSuffix}.db`, { create: true });
 db.exec("PRAGMA journal_mode = WAL");
 
 export const hash = (pw: string) => new Bun.CryptoHasher("sha256").update(pw).digest("hex");
