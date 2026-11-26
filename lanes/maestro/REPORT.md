@@ -3,8 +3,8 @@
 | Scenarios passing (S1-S6) | 6/6 | `lanes/maestro/flows/s1..s6`. Maestro 2.12.1 web (Beta, Chromium via CDP). Two subflow-level workarounds for web gaps, see below |
 | Local run time | 197-208 s for all six (S1 24, S2 47, S3 26, S4 37, S5 48, S6 14) | `PORT_OFFSET=300 lanes/maestro/run.sh`, headless, macOS arm64, flows run serially. Slow: each step costs about 0.3-1.5 s (hierarchy fetch plus tap settle) |
 | 10-run pass rate | 10/10 runs, 60/60 flows | No flakes, no retries, no FLAKY=1. Run time spread 196-208 s |
-| CI run time | 3m53s job (flows 3m08s) | ubuntu-latest, Java 17, Maestro install about 5 s, stack boot 3 s. Chromium needed no manual install |
-| CI result | pass on first push | run 45869881524 (PR #3), 6/6 flows, artifact `maestro-results` has junit.xml, per-flow logs, failure screenshots, stack.log |
+| CI run time | 3m53s and 3m41s job on two runs (flows about 3m08s) | ubuntu-latest, Java 17, Maestro install about 5 s, stack boot 3 s. Chromium needed no manual install |
+| CI result | pass on first push and on the follow-up push | runs 45869881524 and 45873870826 (PR #3), 6/6 flows, artifact `maestro-results` has junit.xml, per-flow logs, failure screenshots, stack.log |
 | Setup effort | 4 steps | install Java 17 (brew openjdk if absent), `curl -fsSL get.maestro.mobile.dev \| bash`, `bun install`, `PORT_OFFSET=N bun run start`. No browser install, no config file, no npm deps. Env passed with `-e` |
 | Time to author | about 45 min to 6/6 green, including install and bug hunting | Most time went to discovering web selector and scroll quirks, not writing YAML. A second author who knows the quirks: roughly 15 min. About 190 lines of YAML plus two 5-line JS scripts |
 | Upkeep probe | Renamed admin button "Publish" to "Send" (scratch, reverted). 2/6 flows failed (S2, S5), 4 passed, failure message `No visible element found: "Publish"` | Fix is one literal in two flows (4 lines, or 1 line if the publish tap is moved into a subflow). Text selectors mean label renames break flows; there is no role/testid layer on web beyond `id` |
