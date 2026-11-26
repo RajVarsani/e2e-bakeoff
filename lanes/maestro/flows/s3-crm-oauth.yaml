@@ -1,0 +1,30 @@
+url: ${PORTAL_URL}
+name: S3 portal connects CRM via cross-origin OAuth
+---
+- runScript: ../scripts/reset.js
+- launchApp:
+    clearState: true
+- runFlow:
+    file: ../subflows/portal-login.yaml
+    env:
+      PORTAL_EMAIL: alice@example.test
+      PORTAL_PASSWORD: alice-pass-1
+- tapOn: "Connect CRM"
+- extendedWaitUntil:
+    visible: "CRM sign in"
+    timeout: 10000
+- tapOn: "Email.*"
+- inputText: "crm.user@example.test"
+- tapOn: "Password.*"
+- inputText: "crm-pass-1"
+- tapOn: "Sign in"
+- extendedWaitUntil:
+    visible: "Allow"
+    timeout: 10000
+- tapOn: "Allow"
+- extendedWaitUntil:
+    visible: "CRM connected"
+    timeout: 15000
+- assertVisible: "Jordan Lee.*"
+- assertVisible: "Sam Patel.*"
+- assertVisible: "Riley Chen.*"

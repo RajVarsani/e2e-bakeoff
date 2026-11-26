@@ -1,0 +1,41 @@
+url: ${ADMIN_URL}
+name: S2 create, publish, async render, portal sees ready
+---
+- runScript: ../scripts/reset.js
+- launchApp:
+    clearState: true
+- runFlow:
+    file: ../subflows/admin-login.yaml
+    env:
+      ADMIN_PATH: ""
+- runFlow:
+    file: ../subflows/create-letter.yaml
+    env:
+      TITLE: Welcome
+      BODY: Hello Alice, welcome aboard.
+# Publish sits below the 625px viewport after the create error row appears; Maestro web does not scroll into view and taps off-screen silently
+- scrollUntilVisible:
+    element:
+      text: "Publish"
+    timeout: 5000
+- tapOn: "Publish"
+- extendedWaitUntil:
+    visible: "rendering"
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "ready"
+    timeout: 15000
+# second session: the portal origin has its own localStorage token, admin's stays untouched
+- runFlow:
+    file: ../subflows/portal-login.yaml
+    env:
+      PORTAL_EMAIL: alice@example.test
+      PORTAL_PASSWORD: alice-pass-1
+- extendedWaitUntil:
+    visible: "Welcome"
+    timeout: 10000
+- assertVisible: "ready"
+- tapOn: "Welcome"
+- extendedWaitUntil:
+    visible: "Hello Alice, welcome aboard."
+    timeout: 10000

@@ -1,0 +1,12 @@
+appId: admin
+---
+- tapOn: "Title.*"
+- inputText: ${TITLE}
+- tapOn: "Body.*"
+- inputText: ${BODY}
+- tapOn: "Recipient.*"
+- inputText: "Alice"
+- tapOn: "Create letter"
+- extendedWaitUntil:
+    visible: ${TITLE}
+    timeout: 10000
