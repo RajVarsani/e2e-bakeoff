@@ -1,0 +1,17 @@
+{
+  "name": "e2ecom-lane",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@ai-sdk/anthropic": "^4.0.110",
+    "@e2e-dev/core": "^0.25.0",
+    "@e2e-dev/web": "^0.17.0",
+    "@types/node": "^26.6.11",
+    "ai": "^7.0.183",
+    "e2e": "^0.25.0",
+    "typescript": "^7.0.2"
+  },
+  "scripts": {
+    "test:e2e": "e2e run"
+  }
+}

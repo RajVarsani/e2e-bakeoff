@@ -1,0 +1,53 @@
+name: e2ecom
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ${{ vars.E2ECOM_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 20
+    env:
+      PORT_OFFSET: "200"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+          cache-dependency-path: lanes/e2ecom/package-lock.json
+      - name: Install sandbox apps
+        run: bun install --frozen-lockfile
+      - name: Install e2e lane
+        working-directory: lanes/e2ecom
+        run: npm ci
+      - name: Install browser
+        working-directory: lanes/e2ecom
+        run: npx e2e-web install chromium --with-deps
+      - name: Run e2e (runner boots the stack via app.command)
+        working-directory: lanes/e2ecom
+        run: npx e2e run --reporter list,junit
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AI_SDK_LOG_WARNINGS: "false"
+      - name: Upload report and artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2ecom-report
+          path: |
+            lanes/e2ecom/.e2e/report.json
+            lanes/e2ecom/.e2e/junit.xml
+            lanes/e2ecom/.e2e/results
+            lanes/e2ecom/.e2e/logs
+          if-no-files-found: warn
+          retention-days: 7
