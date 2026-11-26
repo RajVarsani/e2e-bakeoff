@@ -1,0 +1,7 @@
+{
+  "name": "e2e-bakeoff-playwright",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "playwright test", "report": "playwright show-report" },
+  "devDependencies": { "@playwright/test": "~1.65.0", "@types/node": "^22.0.0" }
+}

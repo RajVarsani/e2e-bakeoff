@@ -1,0 +1,71 @@
+name: playwright
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: lanes/playwright
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install app deps
+        working-directory: .
+        run: bun install --frozen-lockfile
+      - name: Install lane deps and browser
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Boot stack
+        working-directory: .
+        run: |
+          nohup bun run start > stack.log 2>&1 &
+          for p in 5100 5101 5102 5103; do
+            timeout 60 bash -c "until curl -s -o /dev/null http://127.0.0.1:$p/; do sleep 1; done"
+          done
+      - name: Run suite
+        run: npx playwright test
+      - name: Stack log
+        if: failure()
+        working-directory: .
+        run: tail -n 100 stack.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            lanes/playwright/playwright-report
+            lanes/playwright/test-results
+          retention-days: 14
+
+  heal:
+    needs: test
+    if: always() && needs.test.result == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: failure-artifacts
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }} PR: ${{ github.event.pull_request.number }}
+            The Playwright suite in lanes/playwright failed. Failure artifacts (error-context.md, traces, screenshots) are in failure-artifacts/.
+            Read them, find the root cause, and follow the playwright-test-healer rules in lanes/playwright/.claude/agents/playwright-test-healer.md.
+            Edit only files under lanes/playwright/tests. Never touch apps/. If the failure is an app bug rather than a stale test, do not edit; say so.
+            Post a PR comment with the diagnosis and the suggested diff.
+          claude_args: --allowedTools "Read,Edit,Glob,Grep,Bash(git diff:*)"
