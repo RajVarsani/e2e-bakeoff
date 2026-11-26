@@ -1,0 +1,9 @@
+- main [ref=f3e2]:
+  - heading "Authorize access" [level=1] [ref=f3e3]
+  - paragraph [ref=f3e4]:
+    - text: Portal app wants to read your clients as
+    - strong [ref=f3e5]: CRM User
+    - text: (crm.user@example.test).
+  - generic [ref=f3e6]:
+    - button "Allow" [ref=f3e7] [cursor=pointer]
+    - button "Deny" [ref=f3e8] [cursor=pointer]

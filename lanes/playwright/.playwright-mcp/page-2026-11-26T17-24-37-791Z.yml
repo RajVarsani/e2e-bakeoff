@@ -1,0 +1,39 @@
+- generic [ref=e2]:
+  - banner [ref=e11]:
+    - heading "Letters Admin" [level=1] [ref=e12]
+    - generic [ref=e13]:
+      - text: Admin User
+      - button "Sign out" [ref=e14] [cursor=pointer]
+  - main [ref=e15]:
+    - heading "New letter" [level=2] [ref=e16]
+    - form "New letter" [ref=e17]:
+      - generic [ref=e18]:
+        - text: Title
+        - textbox "Title" [ref=e19]: Welcome for Alice
+      - generic [ref=e20]:
+        - text: Body
+        - textbox "Body" [ref=e21]: Hello Alice, welcome aboard.
+      - generic [ref=e22]:
+        - text: Recipient
+        - combobox "Recipient" [ref=e23]:
+          - option "Select a recipient" [disabled]
+          - option "Alice Portal (alice@example.test)" [selected]
+          - option "Bob Portal (bob@example.test)"
+      - alert [ref=e37]: Cannot read properties of null (reading 'reset')
+      - button "Create letter" [active] [ref=e25] [cursor=pointer]
+    - heading "Letters" [level=2] [ref=e26]
+    - table [ref=e27]:
+      - rowgroup [ref=e28]:
+        - row [ref=e29]:
+          - columnheader "Title" [ref=e30]
+          - columnheader "Recipient" [ref=e31]
+          - columnheader "Status" [ref=e32]
+          - columnheader "Actions" [ref=e33]
+      - rowgroup [ref=e34]:
+        - row [ref=e38]:
+          - cell "Welcome for Alice" [ref=e39]
+          - cell "Alice Portal" [ref=e40]
+          - cell "draft" [ref=e41]
+          - cell [ref=e42]:
+            - button "Edit" [ref=e43] [cursor=pointer]
+            - button "Publish" [ref=e44] [cursor=pointer]

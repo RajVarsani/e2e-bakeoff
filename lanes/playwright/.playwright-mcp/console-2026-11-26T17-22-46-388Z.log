@@ -1,0 +1,27 @@
+[      45ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://portal.localhost:5202/node_modules/.vite/deps/chunk-CH42LMDQ.js?v=ef9c96d6:21548
+[      75ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://portal.localhost:5202/favicon.ico:0
+[    7369ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://portal.localhost:5202/node_modules/.vite/deps/chunk-CH42LMDQ.js?v=ef9c96d6:21548
+[   19397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   20396ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   21397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   22396ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   23398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   24398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   25399ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   26400ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   27398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   28398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   29398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   30397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   31398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   32396ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   33397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   34397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   35396ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   36398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   37397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   38398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   39397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   40398ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   41397ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0
+[   42400ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://api.localhost:5200/inbox/1:0

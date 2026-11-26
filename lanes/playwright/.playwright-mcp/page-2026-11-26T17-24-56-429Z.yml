@@ -1,0 +1,10 @@
+- main [ref=f2e13]:
+  - heading "Sign in" [level=1] [ref=f2e14]
+  - form "Sign in" [ref=f2e15]:
+    - generic [ref=f2e16]:
+      - text: Email
+      - textbox "Email" [ref=f2e17]
+    - generic [ref=f2e18]:
+      - text: Password
+      - textbox "Password" [ref=f2e19]
+    - button "Sign in" [ref=f2e20] [cursor=pointer]

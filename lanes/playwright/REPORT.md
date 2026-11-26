@@ -1,0 +1,19 @@
+# Playwright lane (Playwright 1.65.1, init-agents --loop=claude)
+
+| metric | value | note |
+|---|---|---|
+| Scenarios passing (S1-S6) | 6/6 | one spec per scenario in `tests/`, plus `seed.spec.ts` (7 tests total) |
+| Local run time | ~34s per full run (26.9 to 38.4s) | 1 worker, headless Chromium, Apple silicon, PORT_OFFSET=100. S2/S4/S5/S6 dominated by the 2-6s render |
+| 10-run pass rate | 10/10 (100%) | FLAKY=0, sequential runs, `/test/reset` before every test |
+| CI run time | CI_TIME | see CI result |
+| CI result | CI_RESULT | `.github/workflows/playwright.yml`: job `test` (bun + stack + suite + report/trace artifact), job `heal` (claude-code-action) |
+| Setup effort | ~5 min, 4 commands | `npm i` in lanes/playwright, `npx playwright install chromium`, `npx playwright init-agents --loop=claude`, start stack. No auth state files, no browser extensions |
+| Time to author | ~22 min wall, all six scenarios | planner 29s, generator ~4 min (agent, 6 scenarios), healer 3 min, plus own config/helper/loop/CI/report time |
+| Cost per run | $0 per CI/local run (no LLM in the run path) | Authoring via agents: planner $0.18, generator $1.18, healer $0.32 = ~$1.7 (CLI-reported `total_cost_usd`, sonnet subagents) |
+| Upkeep probe | Renamed "Publish" to "Send letter" in a scratch edit of apps/admin: 4 of 6 tests failed (S2, S4, S5, S6, 30s timeouts each). Healer agent fixed all four in 192s (~$0.32) by editing the button locator in each file; no assertions weakened | Reverted app and tests afterwards. Locator was duplicated across four files; a shared helper would make this a one-line fix |
+| Async-wait handling | Web-first assertions only, no sleeps | `expect(row).toContainText(/ready/, {timeout: 15s})` auto-polls; global expect timeout 15s. Also asserts the transient `rendering` state. Apps poll at 1s so intermediate states are observable |
+| Cross-origin / multi-session | Native and easy | Admin and portal sessions use separate `browser.newContext()` (own storage). S3 follows portal -> crm -> portal in one page and asserts `toHaveURL` per origin. `*.localhost` resolves in Chromium with no config |
+| DX notes | Strong: role/label locators, trace viewer, HTML report, UI mode. Agents are a good first draft but not zero-touch | See hand-fixes below |
+| Hand-fixes needed | (1) `seed.spec.ts` was not found until `testMatch` included it (planner initially planned blind, first run produced a plan without exploring). (2) Generator output had a wrong dropdown label ("Alice (..)" vs "Alice Portal (..)") that I had pre-written wrongly in my own helper; generator corrected it. (3) I added a missing assertion in S5 that Alice's failed letter is not openable. (4) Plan put files in `tests/letters/`, tests landed in `tests/`; harmless | Agents have no shell, so they use the test-runner MCP tool and cannot set `PORT_OFFSET`; run env must be exported before launching claude. Plan quality was thin: planner only saw the sign-in page |
+| claude-code-action heal job | Wired (needs repo secret ANTHROPIC_API_KEY, `pull_request` from same repo only); skipped when tests pass | Downloads failure artifacts, asks Claude to diagnose and comment a suggested diff. Not triggered in this PR run since the suite passes; unverified end to end. Cannot rerun the stack, so it reasons from traces and error-context only |
+| Blockers / app bugs | No blockers. App bug: admin shows alert "Cannot read properties of null (reading 'reset')" after Create letter / Save changes (`e.currentTarget` read after `await` in `save()`, apps/admin/src/App.tsx) | Operation still succeeds; not fixed per instructions; no scenario asserts on it, so it is invisible to the suite |
