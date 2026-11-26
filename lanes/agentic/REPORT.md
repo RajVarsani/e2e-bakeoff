@@ -7,8 +7,8 @@
 | local run time | ~228 s per full run (215-244 s, 11 runs) | S1 ~24 s, S2 ~63 s, S3 ~35 s, S4 ~41 s, S5 ~64 s, S6 ~14 s; ~80 LLM calls, serial, 2-4 s each |
 | 10-run pass rate | 10/10 scenarios-suites green (60/60 scenario passes), plus 1 earlier green run | determinism held on this app; sample is small, no FLAKY=1 |
 | tokens and $ per run | ~145k input, ~5.8k output (~80 calls); ~$0.52 | $ assumes $3/$15 per MTok for the Sonnet class (price not verified); ~$5 for the 10-run batch |
-| CI run time | CI_TIME | |
-| CI result | CI_RESULT | |
+| CI run time | ~4m14s wall (run 45874044411, ubuntu-latest) | includes bun install, Playwright Chromium, stack boot and the suite |
+| CI result | success, 6/6 | first CI run failed: ubuntu-latest is 26.04 and pinned Playwright 1.56.1 refuses it; fixed with playwright@latest |
 | setup effort | ~1.5 h to author and get stable | ~250 lines TS. Lost time on (a) Stagehand v4 needs a non-headless-shell Chromium with extension support (`executablePath` to Playwright Chromium, `--headless` new mode) or init hangs 60 s, (b) `act` does one action per call, so form fills are several steps |
 | upkeep probe | FAIL, 2 of 3 scenarios broke | Renamed admin "Publish" button to "Send now": S2 and S5 failed with "No action found" for step `click Publish...`; S4 unaffected. Natural-language steps still name labels, so a rename needs the step text edited (no selector, but not self-healing for intent drift) |
 | false-pass probe | caught | Portal letter view changed to render "Lorem ipsum wrong text": S2 and S4 failed on the body assertion. Extract returned the literal text, no hallucinated pass. Weakness: assertions are only as strict as the schema asked for |
