@@ -1,0 +1,16 @@
+appId: portal
+---
+- openLink: ${PORTAL_URL}
+- extendedWaitUntil:
+    visible: "Sign in"
+    timeout: 10000
+- tapOn: "Email.*"
+- inputText: ${PORTAL_EMAIL}
+- tapOn: "Password.*"
+- inputText: ${PORTAL_PASSWORD}
+- tapOn:
+    text: "Sign in"
+    index: 1
+- extendedWaitUntil:
+    visible: "Inbox"
+    timeout: 10000

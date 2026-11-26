@@ -1,0 +1,42 @@
+name: maestro
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  maestro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MAESTRO_CLI_NO_ANALYTICS: "1"
+      MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Boot stack
+        run: |
+          nohup bun run start > stack.log 2>&1 &
+          for p in 5100 5101 5102 5103; do
+            timeout 60 bash -c "until curl -s -o /dev/null http://127.0.0.1:$p/; do sleep 1; done"
+          done
+      - name: Run flows
+        run: lanes/maestro/run.sh
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-results
+          path: |
+            lanes/maestro/results
+            stack.log
+          if-no-files-found: warn

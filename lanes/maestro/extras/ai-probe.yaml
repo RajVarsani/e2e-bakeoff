@@ -1,0 +1,9 @@
+url: ${ADMIN_URL}
+name: AI probe assertWithAI on the admin login screen
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Sign in"
+- assertWithAI:
+    assertion: The page shows a sign-in form with email and password fields

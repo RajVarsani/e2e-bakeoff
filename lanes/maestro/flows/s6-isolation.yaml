@@ -1,0 +1,23 @@
+url: ${PORTAL_URL}
+name: S6 portal user cannot see another user's letter
+---
+- runScript: ../scripts/reset.js
+- runScript:
+    file: ../scripts/seed-ready.js
+    env:
+      TITLE: Alice private
+      BODY: Secret for Alice only.
+- launchApp:
+    clearState: true
+- runFlow:
+    file: ../subflows/portal-login.yaml
+    env:
+      PORTAL_EMAIL: bob@example.test
+      PORTAL_PASSWORD: bob-pass-1
+- assertVisible: "No letters yet."
+- assertNotVisible: "Alice private"
+- openLink: ${PORTAL_URL}/letters/${output.letterId}
+- extendedWaitUntil:
+    visible: "Letter not found.*"
+    timeout: 10000
+- assertNotVisible: "Secret for Alice only.*"

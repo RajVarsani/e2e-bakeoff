@@ -1,0 +1,35 @@
+url: ${ADMIN_URL}
+name: S1 admin login and wrong-password negative
+---
+- runScript: ../scripts/reset.js
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Sign in"
+    timeout: 10000
+- tapOn: "Email.*"
+- inputText: "admin@example.test"
+- tapOn: "Password.*"
+- inputText: "wrong-password"
+- tapOn:
+    text: "Sign in"
+    index: 1
+- extendedWaitUntil:
+    visible: "Invalid email or password"
+    timeout: 10000
+- assertNotVisible: "Letters Admin"
+# eraseText is a no-op on web in 2.12.1, so reload the form instead of clearing the field
+- openLink: ${ADMIN_URL}
+- extendedWaitUntil:
+    visible: "Sign in"
+- tapOn: "Email.*"
+- inputText: "admin@example.test"
+- tapOn: "Password.*"
+- inputText: "admin-pass-1"
+- tapOn:
+    text: "Sign in"
+    index: 1
+- extendedWaitUntil:
+    visible: "Letters Admin"
+    timeout: 10000
+- assertVisible: "New letter"

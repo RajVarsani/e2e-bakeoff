@@ -1,0 +1,38 @@
+url: ${ADMIN_URL}
+name: S4 admin edits published letter, portal shows new content
+---
+- runScript: ../scripts/reset.js
+- runScript:
+    file: ../scripts/seed-ready.js
+    env:
+      TITLE: Welcome
+      BODY: Original body text.
+- launchApp:
+    clearState: true
+- runFlow:
+    file: ../subflows/admin-login.yaml
+    env:
+      ADMIN_PATH: ""
+- assertVisible: "ready"
+- tapOn: "Edit"
+- extendedWaitUntil:
+    visible: "Edit letter.*"
+- tapOn: "Body.*"
+# eraseText is a no-op on web, so the edit appends to the old body; portal check below looks for the new marker
+- inputText: " UPDATED-BODY-V2"
+- tapOn: "Save changes"
+- extendedWaitUntil:
+    visible: "rendering"
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "ready"
+    timeout: 15000
+- runFlow:
+    file: ../subflows/portal-login.yaml
+    env:
+      PORTAL_EMAIL: alice@example.test
+      PORTAL_PASSWORD: alice-pass-1
+- tapOn: "Welcome"
+- extendedWaitUntil:
+    visible: ".*UPDATED-BODY-V2.*"
+    timeout: 10000

@@ -1,0 +1,16 @@
+appId: admin
+---
+- openLink: ${ADMIN_URL}${ADMIN_PATH}
+- extendedWaitUntil:
+    visible: "Sign in"
+    timeout: 10000
+- tapOn: "Email.*"
+- inputText: "admin@example.test"
+- tapOn: "Password.*"
+- inputText: "admin-pass-1"
+- tapOn:
+    text: "Sign in"
+    index: 1
+- extendedWaitUntil:
+    visible: "Letters Admin"
+    timeout: 10000

@@ -1,0 +1,38 @@
+url: ${ADMIN_URL}
+name: S5 render failure surfaced in admin and portal
+---
+- runScript: ../scripts/reset.js
+- launchApp:
+    clearState: true
+- runFlow:
+    file: ../subflows/admin-login.yaml
+    env:
+      ADMIN_PATH: "/?forceFail=1"
+- runFlow:
+    file: ../subflows/create-letter.yaml
+    env:
+      TITLE: Doomed
+      BODY: This render will fail.
+# Publish sits below the 625px viewport after the create error row appears; Maestro web does not scroll into view and taps off-screen silently
+- scrollUntilVisible:
+    element:
+      text: "Publish"
+    timeout: 5000
+- tapOn: "Publish"
+- extendedWaitUntil:
+    visible: "failed"
+    timeout: 15000
+- assertVisible: "Retry"
+- assertNotVisible: "ready"
+- runFlow:
+    file: ../subflows/portal-login.yaml
+    env:
+      PORTAL_EMAIL: alice@example.test
+      PORTAL_PASSWORD: alice-pass-1
+- extendedWaitUntil:
+    visible: "Doomed"
+    timeout: 10000
+- assertVisible: "failed"
+- tapOn: "Doomed"
+- assertVisible: "Inbox"
+- assertNotVisible: "Back to inbox"
