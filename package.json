@@ -1,0 +1,15 @@
+{
+  "name": "e2e-bakeoff",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "start": "bun scripts/start.ts",
+    "reset": "bun scripts/reset.ts",
+    "typecheck": "bun run --filter '*' typecheck"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,12 @@
+# Shared scenarios
+
+Every tool lane implements all rows. Start each scenario from `bun run reset`. Hosts and credentials are in README.md.
+
+| id | name | steps | assertion |
+|---|---|---|---|
+| S1 | Admin login and wrong-password negative | 1. Open admin. 2. Sign in as `admin@example.test` with a wrong password. 3. Sign in with `admin-pass-1`. | Wrong password shows an alert "Invalid email or password" and stays on the sign-in form. Correct login shows the "Letters Admin" header and "New letter" form. |
+| S2 | Create, publish, async render, portal sees it ready | 1. Admin signs in, creates letter "Welcome" with a body, recipient Alice. 2. Click Publish. 3. Wait for the row status to become `ready` (up to 15s, no fixed sleep). 4. In a second session on portal.localhost, sign in as Alice. 5. Open the inbox. | Admin row passes through `rendering` and ends `ready`. Alice's inbox lists "Welcome" with status `ready`; opening it shows the body text. |
+| S3 | Portal connects CRM via cross-origin OAuth | 1. Sign in to portal as Alice. 2. Click "Connect CRM". 3. On crm.localhost, sign in as `crm.user@example.test` / `crm-pass-1`. 4. Click Allow on the consent page. | Browser returns to portal.localhost and shows "CRM connected" and a clients list containing Jordan Lee, Sam Patel and Riley Chen. Origin changes portal, then crm, then portal. |
+| S4 | Admin edits published letter, portal shows updated content | 1. Precondition: a published `ready` letter for Alice (via S2 or `POST /test/seed` with `status: "ready"` then publish). 2. Admin clicks Edit, changes the body, saves. 3. Wait for status `ready` again. 4. Alice opens the letter in portal. | After the edit the row returns to `rendering` then `ready`. Alice's letter view shows the new body and not the old one. |
+| S5 | Render failure surfaced in admin | 1. Admin opens `http://admin.localhost:5101/?forceFail=1` (API running with TEST_MODE=1). 2. Create a letter and Publish. 3. Wait for status. | Row ends with status `failed` (never `ready`) and a Retry button is shown. Alice's inbox shows the letter as `failed`, not openable. |
+| S6 | Portal user cannot see another user's letter | 1. Seed or publish a ready letter addressed to Alice. 2. Sign in to portal as Bob. 3. Check Bob's inbox. 4. Open `/letters/<alice letter id>` directly as Bob. | Bob's inbox does not list the letter. The direct URL shows "Letter not found" and no letter content. |

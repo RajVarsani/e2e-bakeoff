@@ -1,0 +1,16 @@
+body { font-family: system-ui, sans-serif; margin: 0; color: #1a1a1a; background: #f6f6f4; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #222; color: #fff; }
+header h1 { font-size: 18px; margin: 0; }
+main { max-width: 760px; margin: 24px auto; padding: 0 16px; }
+form { display: grid; gap: 12px; background: #fff; padding: 16px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 24px; }
+label { display: grid; gap: 4px; font-size: 14px; }
+input, textarea, select { font: inherit; padding: 6px 8px; border: 1px solid #bbb; border-radius: 4px; }
+button { font: inherit; padding: 6px 12px; border: 1px solid #444; background: #333; color: #fff; border-radius: 4px; cursor: pointer; }
+button.secondary { background: #fff; color: #333; }
+button:disabled { opacity: .5; cursor: default; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; font-size: 14px; }
+.status { padding: 2px 8px; border-radius: 10px; font-size: 12px; background: #eee; }
+.status-rendering { background: #fde9a8; } .status-ready { background: #bfe8c2; } .status-failed { background: #f5b5b5; }
+.error { color: #b00020; } .ok { color: #1b6e2a; }
+article { background: #fff; padding: 16px; border: 1px solid #ddd; border-radius: 6px; white-space: pre-wrap; }
