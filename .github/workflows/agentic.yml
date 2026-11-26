@@ -1,0 +1,40 @@
+name: agentic
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  agentic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PORT_OFFSET: "400"
+      TEST_MODE: "1"
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: bun install
+      - name: Install lane deps and Chromium
+        working-directory: lanes/agentic
+        run: |
+          npm install
+          npx --yes playwright@latest install --with-deps chromium
+      - name: Boot stack
+        run: |
+          nohup bun run start > stack.log 2>&1 &
+          for u in http://127.0.0.1:5500 http://127.0.0.1:5501 http://127.0.0.1:5502 http://127.0.0.1:5503; do
+            for i in $(seq 1 60); do curl -s -o /dev/null "$u" && break; sleep 1; done
+          done
+          curl -s -o /dev/null -w "api %{http_code}\n" http://127.0.0.1:5500/ || true
+      - name: Run agentic suite
+        working-directory: lanes/agentic
+        run: ./go.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agentic-results
+          path: |
+            lanes/agentic/results/
+            stack.log
