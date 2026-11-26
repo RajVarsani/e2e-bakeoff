@@ -5,8 +5,8 @@
 | Scenarios passing (S1-S6) | 6/6 | one spec per scenario in `tests/`, plus `seed.spec.ts` (7 tests total) |
 | Local run time | ~34s per full run (26.9 to 38.4s) | 1 worker, headless Chromium, Apple silicon, PORT_OFFSET=100. S2/S4/S5/S6 dominated by the 2-6s render |
 | 10-run pass rate | 10/10 (100%) | FLAKY=0, sequential runs, `/test/reset` before every test |
-| CI run time | CI_TIME | see CI result |
-| CI result | CI_RESULT | `.github/workflows/playwright.yml`: job `test` (bun + stack + suite + report/trace artifact), job `heal` (claude-code-action) |
+| CI run time | ~78s wall (test job 73s incl. checkout, bun install, browser install, boot) | see CI result |
+| CI result | Green on first run (7/7, no retries needed); heal job skipped as designed | `.github/workflows/playwright.yml`: job `test` (bun + stack + suite + report/trace artifact), job `heal` (claude-code-action) |
 | Setup effort | ~5 min, 4 commands | `npm i` in lanes/playwright, `npx playwright install chromium`, `npx playwright init-agents --loop=claude`, start stack. No auth state files, no browser extensions |
 | Time to author | ~22 min wall, all six scenarios | planner 29s, generator ~4 min (agent, 6 scenarios), healer 3 min, plus own config/helper/loop/CI/report time |
 | Cost per run | $0 per CI/local run (no LLM in the run path) | Authoring via agents: planner $0.18, generator $1.18, healer $0.32 = ~$1.7 (CLI-reported `total_cost_usd`, sonnet subagents) |
